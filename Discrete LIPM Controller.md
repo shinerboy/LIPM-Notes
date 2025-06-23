@@ -21,13 +21,13 @@ Where:
 
 With state vector $\mathbf{s} = [x, \dot{x}]^T = [p, v]^T$, the continuous-time system becomes:
 
-$$\dot{\mathbf{s}} = \begin{bmatrix} 0 & 1 \\ \frac{g}{h} & 0 \end{bmatrix} \mathbf{s}$$
+$$\dot{\mathbf{s}} = \begin{bmatrix} 0 & 1 \\\ \frac{g}{h} & 0 \end{bmatrix} \mathbf{s}$$
 
 ### 1.3 Discrete-Time State Transition Matrix
 
 For discrete-time analysis with time step $T$, the state transition matrix is:
 
-$$\mathbf{A} = \begin{bmatrix} \cosh(\omega T) & \frac{1}{\omega}\sinh(\omega T) \\ \omega \sinh(\omega T) & \cosh(\omega T) \end{bmatrix}$$
+$$\mathbf{A} = \begin{bmatrix} \cosh(\omega T) & \frac{1}{\omega}\sinh(\omega T) \\\ \omega \sinh(\omega T) & \cosh(\omega T) \end{bmatrix}$$
 
 Where $\omega = \sqrt{\frac{g}{h}}$ is the natural frequency of the inverted pendulum.
 
@@ -56,7 +56,7 @@ This constraint couples the foot placement decision with the COM dynamics.
 
 At the start of step $k$, we predict the final state:
 
-$$\begin{bmatrix} p_k(T) _{\text{pred}} \\ v_k(T) _{\text{pred}} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}$$
+$$\begin{bmatrix} p_k(T) _{\text{pred}} \\\ v_k(T) _{\text{pred}} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\\ v_k(0) \end{bmatrix}$$
 
 The stepping controller is designed to achieve $v_{k+1}(0) = v_{\text{des}}$ by setting:
 
@@ -76,7 +76,7 @@ $$u = p_k(T)_ {\text{pred}} + \frac{v_{\text{des}} - \cosh(\omega T) \cdot v_k(T
 
 The actual COM state at the end of step $k$ is:
 
-$$\begin{bmatrix} p_k(T) \\ v_k(T) \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}$$
+$$\begin{bmatrix} p_k(T) \\\ v_k(T) \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\\ v_k(0) \end{bmatrix}$$
 
 The initial conditions for step $k+1$ are:
 $$p_{k+1}(0) = u - p_k(T)$$
@@ -86,7 +86,7 @@ $$v_{k+1}(0) = v_k(T)$$
 
 Substituting the controller into the step-to-step dynamics yields:
 
-$$\begin{bmatrix} p_{k+1}(0) \\ v_{k+1}(0) \end{bmatrix} = \begin{bmatrix} -A_{22} & -\frac{A_{22}^2}{A_{21}} \\ A_{21} & A_{22} \end{bmatrix} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix} + \begin{bmatrix} \frac{v_{\text{des}}}{A_{21}} \\ 0 \end{bmatrix}$$
+$$\begin{bmatrix} p_{k+1}(0) \\\ v_{k+1}(0) \end{bmatrix} = \begin{bmatrix} -A_{22} & -\frac{A_{22}^2}{A_{21}} \\\ A_{21} & A_{22} \end{bmatrix} \begin{bmatrix} p_k(0) \\\ v_k(0) \end{bmatrix} + \begin{bmatrix} \frac{v_{\text{des}}}{A_{21}} \\\ 0 \end{bmatrix}$$
 
 ### 3.3 Eigenvalue Analysis
 
@@ -301,11 +301,11 @@ $$e_{p,k+1} = (A_{11} - K_d A_{11})e_{p,k} + A_{12}e_{v,k}$$
 
 The complete coupled system is:
 
-$$\begin{bmatrix} e_{p,k+1} \\ e_{v,k+1} \end{bmatrix} = \begin{bmatrix} A_{11} - K_d A_{11} & A_{12} \\ -K_p A_{21} & A_{22} - K_p A_{21} \end{bmatrix} \begin{bmatrix} e_{p,k} \\ e_{v,k} \end{bmatrix}$$
+$$\begin{bmatrix} e_{p,k+1} \\\ e_{v,k+1} \end{bmatrix} = \begin{bmatrix} A_{11} - K_d A_{11} & A_{12} \\\ -K_p A_{21} & A_{22} - K_p A_{21} \end{bmatrix} \begin{bmatrix} e_{p,k} \\\ e_{v,k} \end{bmatrix}$$
 
 Simplifying:
 
-$$\begin{bmatrix} e_{p,k+1} \\ e_{v,k+1} \end{bmatrix} = \begin{bmatrix} A_{11}(1 - K_d) & A_{12} \\ -K_p A_{21} & A_{22} - K_p A_{21} \end{bmatrix} \begin{bmatrix} e_{p,k} \\ e_{v,k} \end{bmatrix}$$
+$$\begin{bmatrix} e_{p,k+1} \\\ e_{v,k+1} \end{bmatrix} = \begin{bmatrix} A_{11}(1 - K_d) & A_{12} \\\ -K_p A_{21} & A_{22} - K_p A_{21} \end{bmatrix} \begin{bmatrix} e_{p,k} \\\ e_{v,k} \end{bmatrix}$$
 
 #### 4.3.4 Stability Analysis for K_d
 
@@ -353,7 +353,7 @@ For a humanoid robot with:
 
 The state transition matrix becomes:
 
-$$\mathbf{A} \approx \begin{bmatrix} 1.049 & 0.317 \\ 0.993 & 1.049 \end{bmatrix}$$
+$$\mathbf{A} \approx \begin{bmatrix} 1.049 & 0.317 \\\ 0.993 & 1.049 \end{bmatrix}$$
 
 ### 5.2 Practical Recommendations
 
@@ -373,7 +373,7 @@ $$\mathbf{s}(T) = \mathbf{A}\mathbf{s}(0) + \mathbf{f}(\mathbf{s}(0))$$
 
 Where $\mathbf{f}(\mathbf{s})$ is a quadratic function:
 
-$$\mathbf{f}(\mathbf{s}) = \begin{bmatrix} f_1(p,v) \\ f_2(p,v) \end{bmatrix} = \begin{bmatrix} c_1p^2 + c_2pv + c_3v^2 \\ c_4p^2 + c_5pv + c_6v^2 \end{bmatrix}$$
+$$\mathbf{f}(\mathbf{s}) = \begin{bmatrix} f_1(p,v) \\\ f_2(p,v) \end{bmatrix} = \begin{bmatrix} c_1p^2 + c_2pv + c_3v^2 \\\ c_4p^2 + c_5pv + c_6v^2 \end{bmatrix}$$
 
 The coefficients $c_1$ through $c_6$ are typically identified from experimental data to capture nonlinear effects such as:
 - Angular momentum variations
@@ -411,7 +411,7 @@ $$u = p_k(T)_ {\text{pred}} + p_{k+1}(0)$$
 
 Where the predicted final state includes both linear and nonlinear components:
 
-$$\begin{bmatrix} p_k(T) _{\text{pred}} \\ v_k(T) _{\text{pred}} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix} + \mathbf{f}\left(\begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}\right)$$
+$$\begin{bmatrix} p_k(T) _{\text{pred}} \\\ v_k(T) _{\text{pred}} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\\ v_k(0) \end{bmatrix} + \mathbf{f}\left(\begin{bmatrix} p_k(0) \\\ v_k(0) \end{bmatrix}\right)$$
 
 ### 6.5 Nonlinear Stability Analysis
 
@@ -422,9 +422,11 @@ For steady-state walking, the equilibrium conditions become more complex due to 
 $$p_{\text{eq}} = u_{\text{eq}} - \[A_{11}p_{\text{eq}} + A_{12}v_{\text{des}} + f_1(p_{\text{eq}}, v_{\text{des}})\]$$
 
 And the desired velocity constraint gives:
+
 $$v_{\text{des}} = A_{21}p_{\text{eq}} + A_{22}v_{\text{des}} + c_4 p_{\text{eq}}^2 + c_5 p_{\text{eq}} v_{\text{des}} + c_6 v_{\text{des}}^2$$
 
 Rearranging the velocity equation:
+
 $$v_{\text{des}}(1 - A_{22} - c_5 p_{\text{eq}}) = A_{21}p_{\text{eq}} + c_4 p_{\text{eq}}^2 + c_6 v_{\text{des}}^2$$
 
 This creates a **coupled nonlinear system** that must be solved numerically for $(p_{\text{eq}}, u_{\text{eq}})$.
@@ -432,6 +434,7 @@ This creates a **coupled nonlinear system** that must be solved numerically for 
 #### 6.5.2 Step-to-Step Dynamics
 
 The step-to-step system becomes:
+
 $$p_{k+1}(0) = u - p_k(T) = u - \[A_{11}p_k(0) + A_{12}v_k(0) + f_1(p_k(0), v_k(0))\]$$
 $$v_{k+1}(0) = A_{21}p_k(0) + A_{22}v_k(0) + f_2(p_k(0), v_k(0))$$
 
@@ -441,7 +444,7 @@ Where $p_{k+1}(0)$ is the solution to the quadratic equation, making the system 
 
 Due to the implicit nature of the quadratic controller, the Jacobian becomes:
 
-$$\mathbf{J} = \begin{bmatrix} \frac{\partial p_{k+1}(0)}{\partial p_k(0)} & \frac{\partial p_{k+1}(0)}{\partial v_k(0)} \\ \frac{\partial v_{k+1}(0)}{\partial p_k(0)} & \frac{\partial v_{k+1}(0)}{\partial v_k(0)} \end{bmatrix}\bigg|_{eq}$$
+$$\mathbf{J} = \begin{bmatrix} \frac{\partial p_{k+1}(0)}{\partial p_k(0)} & \frac{\partial p_{k+1}(0)}{\partial v_k(0)} \\\ \frac{\partial v_{k+1}(0)}{\partial p_k(0)} & \frac{\partial v_{k+1}(0)}{\partial v_k(0)} \end{bmatrix}\bigg|_{eq}$$
 
 The Jacobian elements require implicit differentiation due to the quadratic constraint:
 
@@ -468,9 +471,11 @@ The quadratic controller may require additional feedback for robustness against:
 - Regions where the discriminant approaches zero
 
 **Modified Controller with Feedback:**
+
 $$v_{\text{des}}' = v_{\text{des}} - K_p(v_k(0) - v_{\text{expected}}) - K_d(p_{k-1}(T) - p_{\text{expected}})$$
 
 Then solve the quadratic equation using $v_{\text{des}}'$ instead of $v_{\text{des}}$:
+
 $$c_4 p_{k+1}(0)^2 + \[A_{21} + c_5 v_k(T)_ {\text{pred}}\] p_{k+1}(0) + \[A_{22} v_k(T)_ {\text{pred}} + c_6 v_k(T)_ {\text{pred}}^2 - v_{\text{des}}'\] = 0$$
 
 **Root Selection Strategy:**
