@@ -161,34 +161,34 @@ The coefficients $c_1$ through $c_6$ are typically identified from experimental 
 
 For the nonlinear model, the controller derivation starts from the desired velocity constraint:
 
-$$v_{des} = A_{21} p_{k+1}(0) + A_{22} v_k(T)_{pred} + c_4 p_{k+1}(0)^2 + c_5 p_{k+1}(0) v_k(T)_{pred} + c_6 v_k(T)_{pred}^2$$
+$$v_{\text{des}} = A_{21} p_{k+1}(0) + A_{22} v_k(T)_{\text{pred}} + c_4 p_{k+1}(0)^2 + c_5 p_{k+1}(0) v_k(T)_{\text{pred}} + c_6 v_k(T)_{\text{pred}}^2$$
 
 This is a **quadratic equation** in $p_{k+1}(0)$:
 
-$$c_4 p_{k+1}(0)^2 + [A_{21} + c_5 v_k(T)_{pred}] p_{k+1}(0) + [A_{22} v_k(T)_{pred} + c_6 v_k(T)_{pred}^2 - v_{des}] = 0$$
+$$c_4 p_{k+1}(0)^2 + [A_{21} + c_5 v_k(T)_{\text{pred}}] p_{k+1}(0) + [A_{22} v_k(T)_{\text{pred}} + c_6 v_k(T)_{\text{pred}}^2 - v_{\text{des}}] = 0$$
 
 ### 6.3 Quadratic Solution for Optimal Position
 
 The quadratic equation has the standard form $ap^2 + bp + c = 0$ where:
 - $a = c_4$
-- $b = A_{21} + c_5 v_k(T)_{pred}$  
-- $c = A_{22} v_k(T)_{pred} + c_6 v_k(T)_{pred}^2 - v_{des}$
+- $b = A_{21} + c_5 v_k(T)_{\text{pred}}$  
+- $c = A_{22} v_k(T)_{\text{pred}} + c_6 v_k(T)_{\text{pred}}^2 - v_{\text{des}}$
 
 The solution is:
 $$p_{k+1}(0) = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
 
 **Special Cases:**
-- If $c_4 = 0$: Reduces to linear case $p_{k+1}(0) = \frac{v_{des} - A_{22}v_k(T)_{pred} - c_6 v_k(T)_{pred}^2}{A_{21} + c_5 v_k(T)_{pred}}$
+- If $c_4 = 0$: Reduces to linear case $p_{k+1}(0) = \frac{v_{\text{des}} - A_{22}v_k(T)_{\text{pred}} - c_6 v_k(T)_{\text{pred}}^2}{A_{21} + c_5 v_k(T)_{\text{pred}}}$
 - If $c_4 \neq 0$: Choose the root that gives a feasible step length
 
 ### 6.4 Complete Nonlinear Controller
 
 The step length is then:
-$$u = p_k(T)_{pred} + p_{k+1}(0)$$
+$$u = p_k(T)_{\text{pred}} + p_{k+1}(0)$$
 
 Where the predicted final state includes both linear and nonlinear components:
 
-$$\begin{bmatrix} p_k(T)_{pred} \\ v_k(T)_{pred} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix} + \mathbf{f}\left(\begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}\right)$$
+$$\begin{bmatrix} p_k(T)_{\text{pred}} \\ v_k(T)_{\text{pred}} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix} + \mathbf{f}\left(\begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}\right)$$
 
 ### 6.5 Nonlinear Stability Analysis
 
