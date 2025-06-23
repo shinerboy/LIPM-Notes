@@ -60,7 +60,7 @@ $$\begin{bmatrix} p_k(T) _{\text{pred}} \\ v_k(T) _{\text{pred}} \end{bmatrix} =
 
 The stepping controller is designed to achieve $v_{k+1}(0) = v_{\text{des}}$ by setting:
 
-$$u = p_k(T) _{\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T) _{\text{pred}}}{A_{21}}$$
+$$u = p_k(T)_ {\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T)_ {\text{pred}}}{A_{21}}$$
 
 Where $A_{ij}$ denotes the $(i,j)$ element of matrix $\mathbf{A}$.
 
@@ -68,13 +68,14 @@ Where $A_{ij}$ denotes the $(i,j)$ element of matrix $\mathbf{A}$.
 
 Substituting the matrix elements:
 
-$$u = p_k(T) _{\text{pred}} + \frac{v_{\text{des}} - \cosh(\omega T) \cdot v_k(T) _{\text{pred}}}{\omega \sinh(\omega T)}$$
+$$u = p_k(T)_ {\text{pred}} + \frac{v_{\text{des}} - \cosh(\omega T) \cdot v_k(T) _{\text{pred}}}{\omega \sinh(\omega T)}$$
 
 ## 3. Stability Analysis
 
 ### 3.1 Step-to-Step Dynamics
 
 The actual COM state at the end of step $k$ is:
+
 $$\begin{bmatrix} p_k(T) \\ v_k(T) \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}$$
 
 The initial conditions for step $k+1$ are:
@@ -106,7 +107,7 @@ $$|\lambda_1| = |\lambda_2| = \cosh(\omega T) > 1$$
 
 To achieve stability, add velocity and position feedback:
 
-$$u = p_k(T) _{\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T) _{\text{pred}}}{A_{21}} - K_p(v_k(0) - v_{\text{expected}}) - K_d(p_{k-1}(T) - p_{\text{expected}})$$
+$$u = p_k(T)_ {\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T)_ {\text{pred}}}{A_{21}} - K_p(v_k(0) - v_{\text{expected}}) - K_d(p_{k-1}(T) - p_{\text{expected}})$$
 
 **Important Note on Feedback Structure:**
 - $v_{\text{expected}}$ and $p_{\text{expected}}$ are the expected velocity and position based on the planned trajectory
@@ -120,18 +121,23 @@ $$u = p_k(T) _{\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T) _{\text
 #### 4.2.1 Error Dynamics Analysis
 
 To derive the minimum stabilizing gain, we analyze the **velocity error dynamics** with feedback. Define the velocity error:
+
 $$e_{v,k} = v_k(0) - v_{\text{expected},k}$$
 
 From the LIMP dynamics within step k and the velocity continuity $v_{k+1}(0) = v_k(T)$, the velocity evolution becomes:
+
 $$v_{k+1}(0) = v_k(T) = A_{21}p_k(0) + A_{22}v_k(0)$$
 
 The key insight is that the step length $u$ affects the next step's initial position via the kinematic constraint:
+
 $$p_{k+1}(0) = u - p_k(T)$$
 
 With velocity feedback, the controller becomes:
+
 $$u = u_{\text{ff}} - K_p e_{v,k}$$
 
 This affects the velocity evolution through the coupling. From the complete step-to-step analysis (combining kinematic constraint with LIMP dynamics), the velocity error propagates as:
+
 $$e_{v,k+1} = (A_{22} - K_p A_{21}) e_{v,k}$$
 
 #### 4.2.2 Detailed Derivation of Error Dynamics
@@ -143,44 +149,56 @@ $$e_{v,k} = v_k(0) - v_{\text{expected},k}$$
 
 **Step 2: Step-to-step velocity relationship**
 From the LIMP dynamics and velocity continuity:
+
 $$v_{k+1}(0) = v_k(T) = A_{21}p_k(0) + A_{22}v_k(0)$$
 
 **Step 3: Express position in terms of control input**
 From the kinematic constraint at the previous step:
+
 $$p_k(0) = u_{k-1} - p_{k-1}(T)$$
 
 Substituting into the velocity equation:
-$$v_{k+1}(0) = A_{21}[u_{k-1} - p_{k-1}(T)] + A_{22}v_k(0)$$
+
+$$v_{k+1}(0) = A_{21}\[u_{k-1} - p_{k-1}(T)\] + A_{22}v_k(0)$$
+
 $$v_{k+1}(0) = A_{21}u_{k-1} - A_{21}p_{k-1}(T) + A_{22}v_k(0)$$
 
 **Step 4: Include feedback in the controller**
 The controller with velocity feedback is:
+
 $$u_{k-1} = u_{\text{ff},k-1} - K_p e_{v,k-1}$$
 
 Substituting:
-$$v_{k+1}(0) = A_{21}[u_{\text{ff},k-1} - K_p e_{v,k-1}] - A_{21}p_{k-1}(T) + A_{22}v_k(0)$$
+
+$$v_{k+1}(0) = A_{21}\[u_{\text{ff},k-1} - K_p e_{v,k-1}\] - A_{21}p_{k-1}(T) + A_{22}v_k(0)$$
 $$v_{k+1}(0) = A_{21}u_{\text{ff},k-1} - A_{21}K_p e_{v,k-1} - A_{21}p_{k-1}(T) + A_{22}v_k(0)$$
 
 **Step 5: Separate feedforward and feedback effects**
 Without feedback ($K_p = 0$), the feedforward controller is designed to achieve:
+
 $$v_{\text{expected},k+1} = A_{21}u_{\text{ff},k-1} - A_{21}p_{k-1}(T) + A_{22}v_{\text{expected},k}$$
 
 **Step 6: Derive the error propagation**
 The actual velocity with feedback is:
-$$v_{k+1}(0) = v_{\text{expected},k+1} - A_{21}K_p e_{v,k-1} + A_{22}[v_k(0) - v_{\text{expected},k}]$$
+
+$$v_{k+1}(0) = v_{\text{expected},k+1} - A_{21}K_p e_{v,k-1} + A_{22}\[v_k(0) - v_{\text{expected},k}\]$$
 
 Substituting $v_k(0) = v_{\text{expected},k} + e_{v,k}$:
+
 $$v_{k+1}(0) = v_{\text{expected},k+1} - A_{21}K_p e_{v,k-1} + A_{22}e_{v,k}$$
 
 **Step 7: Express the velocity error**
+
 $$e_{v,k+1} = v_{k+1}(0) - v_{\text{expected},k+1}$$
 $$e_{v,k+1} = -A_{21}K_p e_{v,k-1} + A_{22}e_{v,k}$$
 
 **Step 8: Simplify for single-step delay**
 For the velocity feedback case where the control action affects the velocity with a one-step delay, we get:
+
 $$e_{v,k+1} = A_{22}e_{v,k} - A_{21}K_p e_{v,k}$$
 
 **Final Result:**
+
 $$e_{v,k+1} = (A_{22} - K_p A_{21}) e_{v,k}$$
 
 This shows that velocity feedback modifies the error propagation eigenvalue from the unstable $A_{22} = \cosh(\omega T) > 1$ to the potentially stable $(A_{22} - K_p A_{21})$.
@@ -188,45 +206,57 @@ This shows that velocity feedback modifies the error propagation eigenvalue from
 #### 4.2.3 Stability Condition
 
 For **asymptotic stability**, we require:
+
 $$|A_{22} - K_p A_{21}| < 1$$
 
 Substituting the matrix elements:
+
 $$|\cosh(\omega T) - K_p \omega \sinh(\omega T)| < 1$$
 
 Since $\cosh(\omega T) > 1$, we need:
+
 $$-1 < \cosh(\omega T) - K_p \omega \sinh(\omega T) < 1$$
 
 This gives us two conditions:
+
 1. $\cosh(\omega T) - K_p \omega \sinh(\omega T) < 1$
-2. $\cosh(\omega T) - K_p \omega \sinh(\omega T) > -1$
+2. 
+3. $\cosh(\omega T) - K_p \omega \sinh(\omega T) > -1$
 
 From condition 1:
+
 $$K_p > \frac{\cosh(\omega T) - 1}{\omega \sinh(\omega T)}$$
 
 From condition 2:
+
 $$K_p < \frac{\cosh(\omega T) + 1}{\omega \sinh(\omega T)}$$
 
 #### 4.2.4 Minimum Stabilizing Gain
 
 The **minimum stabilizing gain** is:
+
 $$K_{p,\text{min}} = \frac{\cosh(\omega T) - 1}{\omega \sinh(\omega T)}$$
 
 #### 4.2.5 Deadbeat Control
 
 For **deadbeat control** (error goes to zero in exactly one step), we set:
+
 $$A_{22} - K_p A_{21} = 0$$
 
 This gives:
+
 $$K_{p,\text{deadbeat}} = \frac{A_{22}}{A_{21}} = \frac{\cosh(\omega T)}{\omega \sinh(\omega T)}$$
 
 #### 4.2.6 Practical Gain Selection
 
 For robust performance, choose:
+
 $$K_p = \alpha K_{p,\text{deadbeat}} = \alpha \frac{\cosh(\omega T)}{\omega \sinh(\omega T)}$$
 
 Where $0.8 \leq \alpha \leq 1.0$ provides good performance with robustness margins.
 
 **Note**: The deadbeat gain can also be written as:
+
 $$K_{p,\text{deadbeat}} = \frac{\cosh(\omega T)}{\omega \sinh(\omega T)} = \frac{1}{\omega \tanh(\omega T)}$$
 
 ### 4.3 Derivation of Position Feedback Gain K_d
@@ -236,34 +266,45 @@ When both velocity and position feedback are present, we need to analyze the **c
 #### 4.3.1 Coupled Error System Setup
 
 Define the error states:
+
 $$e_{p,k} = p_{k-1}(T) - p_{\text{expected},k-1}$$
+
 $$e_{v,k} = v_k(0) - v_{\text{expected},k}$$
 
 The complete controller with both feedbacks is:
+
 $$u = u_{\text{ff}} - K_p e_{v,k} - K_d e_{p,k}$$
 
 #### 4.3.2 Position Error Dynamics
 
 From the kinematic constraint and LIMP dynamics:
-$$p_{k+1}(0) = u - p_k(T) = u - [A_{11}p_k(0) + A_{12}v_k(0)]$$
+
+$$p_{k+1}(0) = u - p_k(T) = u - \[A_{11}p_k(0) + A_{12\}v_k(0)]$$
 
 The position error at the end of step k is:
+
 $$e_{p,k+1} = p_k(T) - p_{\text{expected},k}$$
+
 $$e_{p,k+1} = A_{11}p_k(0) + A_{12}v_k(0) - p_{\text{expected},k}$$
 
 Since $p_k(0) = u_{k-1} - p_{k-1}(T)$ and the controller has feedback:
+
 $$p_k(0) = u_{\text{ff},k-1} - K_p e_{v,k-1} - K_d e_{p,k-1} - p_{k-1}(T)$$
 
 Substituting and following similar steps as for velocity, the position error dynamics become:
+
 $$e_{p,k+1} = A_{11}e_{p,k} - A_{11}K_d e_{p,k} + A_{12}e_{v,k}$$
+
 $$e_{p,k+1} = (A_{11} - K_d A_{11})e_{p,k} + A_{12}e_{v,k}$$
 
 #### 4.3.3 Coupled Error Dynamics Matrix
 
 The complete coupled system is:
+
 $$\begin{bmatrix} e_{p,k+1} \\ e_{v,k+1} \end{bmatrix} = \begin{bmatrix} A_{11} - K_d A_{11} & A_{12} \\ -K_p A_{21} & A_{22} - K_p A_{21} \end{bmatrix} \begin{bmatrix} e_{p,k} \\ e_{v,k} \end{bmatrix}$$
 
 Simplifying:
+
 $$\begin{bmatrix} e_{p,k+1} \\ e_{v,k+1} \end{bmatrix} = \begin{bmatrix} A_{11}(1 - K_d) & A_{12} \\ -K_p A_{21} & A_{22} - K_p A_{21} \end{bmatrix} \begin{bmatrix} e_{p,k} \\ e_{v,k} \end{bmatrix}$$
 
 #### 4.3.4 Stability Analysis for K_d
@@ -272,13 +313,16 @@ For stability, both eigenvalues of the coupled system matrix must have magnitude
 
 **Method 1: Decouple the position dynamics**
 If we want the position error to decay independently, set:
+
 $$A_{11}(1 - K_d) = \lambda_p$$
 
 Where $|\lambda_p| < 1$ is the desired position eigenvalue. This gives:
+
 $$K_d = 1 - \frac{\lambda_p}{A_{11}} = 1 - \frac{\lambda_p}{\cosh(\omega T)}$$
 
 **Method 2: Deadbeat position control**
 For deadbeat position control ($\lambda_p = 0$):
+
 $$K_{d,\text{deadbeat}} = \frac{1}{A_{11}} = \frac{1}{\cosh(\omega T)}$$
 
 **Method 3: Pole placement**
@@ -308,6 +352,7 @@ For a humanoid robot with:
 - Natural frequency: $\omega = \sqrt{9.81/1.0} \approx 3.13$ rad/s
 
 The state transition matrix becomes:
+
 $$\mathbf{A} \approx \begin{bmatrix} 1.049 & 0.317 \\ 0.993 & 1.049 \end{bmatrix}$$
 
 ### 5.2 Practical Recommendations
@@ -339,30 +384,30 @@ The coefficients $c_1$ through $c_6$ are typically identified from experimental 
 
 For the nonlinear model, the controller derivation starts from the desired velocity constraint:
 
-$$v_{\text{des}} = A_{21} p_{k+1}(0) + A_{22} v_k(T) _{\text{pred}} + c_4 p_{k+1}(0)^2 + c_5 p_{k+1}(0) v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2$$
+$$v_{\text{des}} = A_{21} p_{k+1}(0) + A_{22} v_k(T)_ {\text{pred}} + c_4 p_{k+1}(0)^2 + c_5 p_{k+1}(0) v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2$$
 
 This is a **quadratic equation** in $p_{k+1}(0)$:
 
-$$c_4 p_{k+1}(0)^2 + [A_{21} + c_5 v_k(T) _{\text{pred}}] p_{k+1}(0) + [A_{22} v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2 - v_{\text{des}}] = 0$$
+$$c_4 p_{k+1}(0)^2 + \[A_{21} + c_5 v_k(T)_ {\text{pred}}\] p_{k+1}(0) + \[A_{22} v_k(T)_ {\text{pred}\} + c_6 v_k(T)_ {\text{pred}}^2 - v_{\text{des}}] = 0$$
 
 ### 6.3 Quadratic Solution for Optimal Position
 
 The quadratic equation has the standard form $ap^2 + bp + c = 0$ where:
 - $a = c_4$
 - $b = A_{21} + c_5 v_k(T) _{\text{pred}}$  
-- $c = A_{22} v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2 - v_{\text{des}}$
+- $c = A_{22} v_k(T)_ {\text{pred}} + c_6 v_k(T)_ {\text{pred}}^2 - v_{\text{des}}$
 
 The solution is:
 $$p_{k+1}(0) = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
 
 **Special Cases:**
-- If $c_4 = 0$: Reduces to linear case $p_{k+1}(0) = \frac{v_{\text{des}} - A_{22}v_k(T) _{\text{pred}} - c_6 v_k(T) _{\text{pred}}^2}{A_{21} + c_5 v_k(T) _{\text{pred}}}$
+- If $c_4 = 0$: Reduces to linear case $p_{k+1}(0) = \frac{v_{\text{des}} - A_{22}v_k(T)_ {\text{pred}} - c_6 v_k(T)_ {\text{pred}}^2}{A_{21} + c_5 v_k(T) _{\text{pred}}}$
 - If $c_4 \neq 0$: Choose the root that gives a feasible step length
 
 ### 6.4 Complete Nonlinear Controller
 
 The step length is then:
-$$u = p_k(T) _{\text{pred}} + p_{k+1}(0)$$
+$$u = p_k(T)_ {\text{pred}} + p_{k+1}(0)$$
 
 Where the predicted final state includes both linear and nonlinear components:
 
@@ -374,7 +419,7 @@ $$\begin{bmatrix} p_k(T) _{\text{pred}} \\ v_k(T) _{\text{pred}} \end{bmatrix} =
 
 For steady-state walking, the equilibrium conditions become more complex due to the quadratic controller. At equilibrium:
 
-$$p_{\text{eq}} = u_{\text{eq}} - [A_{11}p_{\text{eq}} + A_{12}v_{\text{des}} + f_1(p_{\text{eq}}, v_{\text{des}})]$$
+$$p_{\text{eq}} = u_{\text{eq}} - \[A_{11}p_{\text{eq}} + A_{12}v_{\text{des}} + f_1(p_{\text{eq}}, v_{\text{des}})\]$$
 
 And the desired velocity constraint gives:
 $$v_{\text{des}} = A_{21}p_{\text{eq}} + A_{22}v_{\text{des}} + c_4 p_{\text{eq}}^2 + c_5 p_{\text{eq}} v_{\text{des}} + c_6 v_{\text{des}}^2$$
@@ -387,7 +432,7 @@ This creates a **coupled nonlinear system** that must be solved numerically for 
 #### 6.5.2 Step-to-Step Dynamics
 
 The step-to-step system becomes:
-$$p_{k+1}(0) = u - p_k(T) = u - [A_{11}p_k(0) + A_{12}v_k(0) + f_1(p_k(0), v_k(0))]$$
+$$p_{k+1}(0) = u - p_k(T) = u - \[A_{11}p_k(0) + A_{12}v_k(0) + f_1(p_k(0), v_k(0))\]$$
 $$v_{k+1}(0) = A_{21}p_k(0) + A_{22}v_k(0) + f_2(p_k(0), v_k(0))$$
 
 Where $p_{k+1}(0)$ is the solution to the quadratic equation, making the system highly nonlinear.
@@ -400,13 +445,13 @@ $$\mathbf{J} = \begin{bmatrix} \frac{\partial p_{k+1}(0)}{\partial p_k(0)} & \fr
 
 The Jacobian elements require implicit differentiation due to the quadratic constraint:
 
-$$J_{11} = \frac{\partial p_{k+1}(0)}{\partial p_k(0)} = -[A_{11} + \frac{\partial f_1}{\partial p}] + \frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}} \cdot [A_{21} + \frac{\partial f_2}{\partial p}]$$
+$$J_{11} = \frac{\partial p_{k+1}(0)}{\partial p_k(0)} = -\[A_{11} + \frac{\partial f_1}{\partial p}\] + \frac{\partial p_{k+1}(0)}{\partial v_k(T)_ {\text{pred}}} \cdot \[A_{21} + \frac{\partial f_2}{\partial p}\]$$
 
-$$J_{12} = \frac{\partial p_{k+1}(0)}{\partial v_k(0)} = -[A_{12} + \frac{\partial f_1}{\partial v}] + \frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}} \cdot [A_{22} + \frac{\partial f_2}{\partial v}]$$
+$$J_{12} = \frac{\partial p_{k+1}(0)}{\partial v_k(0)} = -\[A_{12} + \frac{\partial f_1}{\partial v}\] + \frac{\partial p_{k+1}(0)}{\partial v_k(T)_ {\text{pred}}} \cdot \[A_{22} + \frac{\partial f_2}{\partial v}\]$$
 
 Where $\frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}}$ comes from implicit differentiation of the quadratic constraint:
 
-$$\frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}} = -\frac{A_{22} + c_5 p_{k+1}(0) + 2c_6 v_k(T) _{\text{pred}}}{2c_4 p_{k+1}(0) + A_{21} + c_5 v_k(T) _{\text{pred}}}$$
+$$\frac{\partial p_{k+1}(0)}{\partial v_k(T)_ {\text{pred}}} = -\frac{A_{22} + c_5 p_{k+1}(0) + 2c_6 v_k(T)_ {\text{pred}}}{2c_4 p_{k+1}(0) + A_{21} + c_5 v_k(T) _{\text{pred}}}$$
 
 #### 6.5.4 Local Stability Condition
 
@@ -426,7 +471,7 @@ The quadratic controller may require additional feedback for robustness against:
 $$v_{\text{des}}' = v_{\text{des}} - K_p(v_k(0) - v_{\text{expected}}) - K_d(p_{k-1}(T) - p_{\text{expected}})$$
 
 Then solve the quadratic equation using $v_{\text{des}}'$ instead of $v_{\text{des}}$:
-$$c_4 p_{k+1}(0)^2 + [A_{21} + c_5 v_k(T) _{\text{pred}}] p_{k+1}(0) + [A_{22} v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2 - v_{\text{des}}'] = 0$$
+$$c_4 p_{k+1}(0)^2 + \[A_{21} + c_5 v_k(T)_ {\text{pred}}\] p_{k+1}(0) + \[A_{22} v_k(T)_ {\text{pred}} + c_6 v_k(T)_ {\text{pred}}^2 - v_{\text{des}}'\] = 0$$
 
 **Root Selection Strategy:**
 - Choose the root that minimizes step length deviation from nominal
