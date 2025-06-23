@@ -79,6 +79,7 @@ The actual COM state at the end of step $k$ is:
 $$\begin{bmatrix} p_k(T) \\\ v_k(T) \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\\ v_k(0) \end{bmatrix}$$
 
 The initial conditions for step $k+1$ are:
+
 $$p_{k+1}(0) = u - p_k(T)$$
 
 $$v_{k+1}(0) = v_k(T)$$
