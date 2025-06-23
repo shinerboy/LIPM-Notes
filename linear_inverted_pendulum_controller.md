@@ -60,7 +60,7 @@ $$\begin{bmatrix} p_k(T) _{\text{pred}} \\ v_k(T) _{\text{pred}} \end{bmatrix} =
 
 The stepping controller is designed to achieve $v_{k+1}(0) = v_{\text{des}}$ by setting:
 
-$$u = p_k(T) _{\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T) _{\text{pred}}}{A_{21}}$$
+$$u = p_k(T)_ {\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T)_ {\text{pred}}}{A_{21}}$$
 
 Where $A_{ij}$ denotes the $(i,j)$ element of matrix $\mathbf{A}$.
 
@@ -68,14 +68,15 @@ Where $A_{ij}$ denotes the $(i,j)$ element of matrix $\mathbf{A}$.
 
 Substituting the matrix elements:
 
-$$u = p_k(T) _{\text{pred}} + \frac{v_{\text{des}} - \cosh(\omega T) \cdot v_k(T) _{\text{pred}}}{\omega \sinh(\omega T)}$$
+$$u = p_k(T)_ {\text{pred}} + \frac{v_{\text{des}} - \cosh(\omega T) \cdot v_k(T) _{\text{pred}}}{\omega \sinh(\omega T)}$$
 
 ## 3. Stability Analysis
 
 ### 3.1 Step-to-Step Dynamics
 
 The actual COM state at the end of step $k$ is:
-$$\begin{bmatrix} p_k(T) \\ v_k(T) \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}$$
+
+$$\begin{bmatrix} p_k(T) \\ v_k(T) \end{bmatrix} = \mathbf{A} \begin{bmatrix} p _k(0) \\ v _k(0) \end{bmatrix}$$
 
 The initial conditions for step $k+1$ are:
 $$p_{k+1}(0) = u - p_k(T)$$
@@ -106,7 +107,7 @@ $$|\lambda_1| = |\lambda_2| = \cosh(\omega T) > 1$$
 
 To achieve stability, add velocity and position feedback:
 
-$$u = p_k(T) _{\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T) _{\text{pred}}}{A_{21}} - K_p(v_k(0) - v_{\text{des}}) - K_d(p_k(0) - p_{\text{des}})$$
+$$u = p_k(T)_ {\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T)_ {\text{pred}}}{A_{21}} - K_p(v_k(0) - v_{\text{des}}) - K_d(p_k(0) - p_{\text{des}})$$
 
 ### 4.2 Minimum Stabilizing Gain
 
@@ -130,6 +131,7 @@ For a humanoid robot with:
 - Natural frequency: $\omega = \sqrt{9.81/1.0} \approx 3.13$ rad/s
 
 The state transition matrix becomes:
+
 $$\mathbf{A} \approx \begin{bmatrix} 1.049 & 0.317 \\ 0.993 & 1.049 \end{bmatrix}$$
 
 ### 5.2 Practical Recommendations
@@ -161,30 +163,31 @@ The coefficients $c_1$ through $c_6$ are typically identified from experimental 
 
 For the nonlinear model, the controller derivation starts from the desired velocity constraint:
 
-$$v_{\text{des}} = A_{21} p_{k+1}(0) + A_{22} v_k(T) _{\text{pred}} + c_4 p_{k+1}(0)^2 + c_5 p_{k+1}(0) v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2$$
+$$v_{\text{des}} = A_{21} p_{k+1}(0) + A_{22} v_k(T)_ {\text{pred}} + c_4 p_{k+1}(0)^2 + c_5 p_{k+1}(0) v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2$$
 
 This is a **quadratic equation** in $p_{k+1}(0)$:
 
-$$c_4 p_{k+1}(0)^2 + [A_{21} + c_5 v_k(T) _{\text{pred}}] p_{k+1}(0) + [A_{22} v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2 - v_{\text{des}}] = 0$$
+$$c_4 p_{k+1}(0)^2 + \[A_{21} + c_5 v_k(T)_ {\text{pred}}\] p_{k+1}(0) + \[A_{22} v_k(T)_ {\text{pred}} + c_6 v_ k(T)_ {\text{pred}}^2 - v_{\text{des}}\] = 0$$
 
 ### 6.3 Quadratic Solution for Optimal Position
 
 The quadratic equation has the standard form $ap^2 + bp + c = 0$ where:
 - $a = c_4$
 - $b = A_{21} + c_5 v_k(T) _{\text{pred}}$  
-- $c = A_{22} v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2 - v_{\text{des}}$
+- $c = A_{22} v_k(T)_ {\text{pred}} + c_6 v_ k(T)_ {\text{pred}}^2 - v_{\text{des}}$
 
 The solution is:
+
 $$p_{k+1}(0) = \frac{-b \pm \sqrt{b^2 - 4ac}}{2a}$$
 
 **Special Cases:**
-- If $c_4 = 0$: Reduces to linear case $p_{k+1}(0) = \frac{v_{\text{des}} - A_{22}v_k(T) _{\text{pred}} - c_6 v_k(T) _{\text{pred}}^2}{A_{21} + c_5 v_k(T) _{\text{pred}}}$
+- If $c_4 = 0$: Reduces to linear case $p_{k+1}(0) = \frac{v_{\text{des}} - A_{22}v_k(T)_ {\text{pred}} - c_6 v_ k(T)_ {\text{pred}}^2}{A_{21} + c_5 v_k(T) _{\text{pred}}}$
 - If $c_4 \neq 0$: Choose the root that gives a feasible step length
 
 ### 6.4 Complete Nonlinear Controller
 
 The step length is then:
-$$u = p_k(T) _{\text{pred}} + p_{k+1}(0)$$
+$$u = p_k(T)_ {\text{pred}} + p_{k+1}(0)$$
 
 Where the predicted final state includes both linear and nonlinear components:
 
@@ -222,13 +225,13 @@ $$\mathbf{J} = \begin{bmatrix} \frac{\partial p_{k+1}(0)}{\partial p_k(0)} & \fr
 
 The Jacobian elements require implicit differentiation due to the quadratic constraint:
 
-$$J_{11} = \frac{\partial p_{k+1}(0)}{\partial p_k(0)} = -[A_{11} + \frac{\partial f_1}{\partial p}] + \frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}} \cdot [A_{21} + \frac{\partial f_2}{\partial p}]$$
+$$J_{11} = \frac{\partial p_{k+1}(0)}{\partial p_k(0)} = -\[A_{11} + \frac{\partial f_1}{\partial p}\] + \frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}} \cdot \[A _{21} + \frac{\partial f_2}{\partial p}\]$$
 
-$$J_{12} = \frac{\partial p_{k+1}(0)}{\partial v_k(0)} = -[A_{12} + \frac{\partial f_1}{\partial v}] + \frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}} \cdot [A_{22} + \frac{\partial f_2}{\partial v}]$$
+$$J_{12} = \frac{\partial p_{k+1}(0)}{\partial v_k(0)} = -\[A_{12} + \frac{\partial f_1}{\partial v}\] + \frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}} \cdot \[A _{22} + \frac{\partial f_2}{\partial v}\]$$
 
 Where $\frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}}$ comes from implicit differentiation of the quadratic constraint:
 
-$$\frac{\partial p_{k+1}(0)}{\partial v_k(T) _{\text{pred}}} = -\frac{A_{22} + c_5 p_{k+1}(0) + 2c_6 v_k(T) _{\text{pred}}}{2c_4 p_{k+1}(0) + A_{21} + c_5 v_k(T) _{\text{pred}}}$$
+$$\frac{\partial p_{k+1}(0)}{\partial v_k(T)_ {\text{pred}}} = -\frac{A_{22} + c_5 p_{k+1}(0) + 2c_6 v_k(T)_ {\text{pred}}}{2c_4 p_{k+1}(0) + A_{21} + c_5 v_k(T) _{\text{pred}}}$$
 
 #### 6.5.4 Local Stability Condition
 
@@ -248,7 +251,7 @@ The quadratic controller may require additional feedback for robustness against:
 $$v_{\text{des}}' = v_{\text{des}} - K_p(v_k(0) - v_{\text{des}}) - K_d(p_k(0) - p_{\text{eq}})$$
 
 Then solve the quadratic equation using $v_{\text{des}}'$ instead of $v_{\text{des}}$:
-$$c_4 p_{k+1}(0)^2 + [A_{21} + c_5 v_k(T) _{\text{pred}}] p_{k+1}(0) + [A_{22} v_k(T) _{\text{pred}} + c_6 v_k(T) _{\text{pred}}^2 - v_{\text{des}}'] = 0$$
+$$c_4 p_{k+1}(0)^2 + \[A_{21} + c_5 v_k(T)_ {\text{pred}}\] p_{k+1}(0) + \[A_{22} v_k(T)_ {\text{pred}} + c_6 v_k(T)_ {\text{pred}}^2 - v_{\text{des}}'\] = 0$$
 
 **Root Selection Strategy:**
 - Choose the root that minimizes step length deviation from nominal
