@@ -80,6 +80,7 @@ $$\begin{bmatrix} p_k(T) \\\ v_k(T) \end{bmatrix} = \mathbf{A} \begin{bmatrix} p
 
 The initial conditions for step $k+1$ are:
 $$p_{k+1}(0) = u - p_k(T)$$
+
 $$v_{k+1}(0) = v_k(T)$$
 
 ### 3.2 Closed-Loop Step-to-Step System
