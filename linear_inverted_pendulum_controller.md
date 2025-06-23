@@ -60,7 +60,7 @@ $$\begin{bmatrix} p_k(T)_{pred} \\ v_k(T)_{pred} \end{bmatrix} = \mathbf{A} \beg
 
 The stepping controller is designed to achieve $v_{k+1}(0) = v_{des}$ by setting:
 
-$$u = p_k(T)_{pred} + \frac{v_{des} - A_{22} \cdot v_k(T)_{pred}}{A_{21}}$$
+$$u = p_k(T)_{pred} + \frac{v_{des} - A_{22} \cdot{} v_k(T)_{pred}}{A_{21}}$$
 
 Where $A_{ij}$ denotes the $(i,j)$ element of matrix $\mathbf{A}$.
 
