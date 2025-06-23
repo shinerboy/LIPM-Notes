@@ -56,11 +56,11 @@ This constraint couples the foot placement decision with the COM dynamics.
 
 At the start of step $k$, we predict the final state:
 
-$$\begin{bmatrix} p_k(T)_{pred} \\ v_k(T)_{pred} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}$$
+$$\begin{bmatrix} p_k(T)_{\text{pred}} \\ v_k(T)_{\text{pred}} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}$$
 
-The stepping controller is designed to achieve $v_{k+1}(0) = v_{des}$ by setting:
+The stepping controller is designed to achieve $v_{k+1}(0) = v_{\text{des}}$ by setting:
 
-$$u = p_k(T)_{pred} + \frac{v_{des} - A_{22} \cdot{} v_k(T)_{pred}}{A_{21}}$$
+$$u = p_k(T)_{\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T)_{\text{pred}}}{A_{21}}$$
 
 Where $A_{ij}$ denotes the $(i,j)$ element of matrix $\mathbf{A}$.
 
@@ -68,7 +68,7 @@ Where $A_{ij}$ denotes the $(i,j)$ element of matrix $\mathbf{A}$.
 
 Substituting the matrix elements:
 
-$$u = p_k(T)_{pred} + \frac{v_{des} - \cosh(\omega T) \cdot v_k(T)_{pred}}{\omega \sinh(\omega T)}$$
+$$u = p_k(T)_{\text{pred}} + \frac{v_{\text{des}} - \cosh(\omega T) \cdot v_k(T)_{\text{pred}}}{\omega \sinh(\omega T)}$$
 
 ## 3. Stability Analysis
 
@@ -85,7 +85,7 @@ $$v_{k+1}(0) = v_k(T)$$
 
 Substituting the controller into the step-to-step dynamics yields:
 
-$$\begin{bmatrix} p_{k+1}(0) \\ v_{k+1}(0) \end{bmatrix} = \begin{bmatrix} -A_{22} & -\frac{A_{22}^2}{A_{21}} \\ A_{21} & A_{22} \end{bmatrix} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix} + \begin{bmatrix} \frac{v_{des}}{A_{21}} \\ 0 \end{bmatrix}$$
+$$\begin{bmatrix} p_{k+1}(0) \\ v_{k+1}(0) \end{bmatrix} = \begin{bmatrix} -A_{22} & -\frac{A_{22}^2}{A_{21}} \\ A_{21} & A_{22} \end{bmatrix} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix} + \begin{bmatrix} \frac{v_{\text{des}}}{A_{21}} \\ 0 \end{bmatrix}$$
 
 ### 3.3 Eigenvalue Analysis
 
@@ -106,7 +106,7 @@ $$|\lambda_1| = |\lambda_2| = \cosh(\omega T) > 1$$
 
 To achieve stability, add velocity and position feedback:
 
-$$u = p_k(T)_{pred} + \frac{v_{des} - A_{22} \cdot v_k(T)_{pred}}{A_{21}} - K_p(v_k(0) - v_{des}) - K_d(p_k(0) - p_{des})$$
+$$u = p_k(T)_{\text{pred}} + \frac{v_{\text{des}} - A_{22} \cdot v_k(T)_{\text{pred}}}{A_{21}} - K_p(v_k(0) - v_{\text{des}}) - K_d(p_k(0) - p_{\text{des}})$$
 
 ### 4.2 Minimum Stabilizing Gain
 
@@ -196,15 +196,15 @@ $$\begin{bmatrix} p_k(T)_{\text{pred}} \\ v_k(T)_{\text{pred}} \end{bmatrix} = \
 
 For steady-state walking, the equilibrium conditions become more complex due to the quadratic controller. At equilibrium:
 
-$$p_{eq} = u_{eq} - [A_{11}p_{eq} + A_{12}v_{des} + f_1(p_{eq}, v_{des})]$$
+$$p_{\text{eq}} = u_{\text{eq}} - [A_{11}p_{\text{eq}} + A_{12}v_{\text{des}} + f_1(p_{\text{eq}}, v_{\text{des}})]$$
 
 And the desired velocity constraint gives:
-$$v_{des} = A_{21}p_{eq} + A_{22}v_{des} + c_4 p_{eq}^2 + c_5 p_{eq} v_{des} + c_6 v_{des}^2$$
+$$v_{\text{des}} = A_{21}p_{\text{eq}} + A_{22}v_{\text{des}} + c_4 p_{\text{eq}}^2 + c_5 p_{\text{eq}} v_{\text{des}} + c_6 v_{\text{des}}^2$$
 
 Rearranging the velocity equation:
-$$v_{des}(1 - A_{22} - c_5 p_{eq}) = A_{21}p_{eq} + c_4 p_{eq}^2 + c_6 v_{des}^2$$
+$$v_{\text{des}}(1 - A_{22} - c_5 p_{\text{eq}}) = A_{21}p_{\text{eq}} + c_4 p_{\text{eq}}^2 + c_6 v_{\text{des}}^2$$
 
-This creates a **coupled nonlinear system** that must be solved numerically for $(p_{eq}, u_{eq})$.
+This creates a **coupled nonlinear system** that must be solved numerically for $(p_{\text{eq}}, u_{\text{eq}})$.
 
 #### 6.5.2 Step-to-Step Dynamics
 
