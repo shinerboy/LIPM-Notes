@@ -55,7 +55,7 @@ This constraint couples the foot placement decision with the COM dynamics.
 ### 2.3 Controller Derivation
 
 At the start of step $k$, we predict the final state:
-
+$$\begin{bmatrix} p_k(T)_{\text{pred}} \\ v_k(T)_{\text{pred}} \end{bmatrix} $$
 $$\begin{bmatrix} p_k(T)_{\text{pred}} \\ v_k(T)_{\text{pred}} \end{bmatrix} = \mathbf{A} \begin{bmatrix} p_k(0) \\ v_k(0) \end{bmatrix}$$
 
 The stepping controller is designed to achieve $v_{k+1}(0) = v_{\text{des}}$ by setting:
